@@ -1,0 +1,36 @@
+
+
+
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost
+    username: test
+    password: 123456
+
+#热部署模块
+devtools:
+  restart:
+    #热部署开关
+    enabled: true
+    #指定热部署的目录
+    additional-paths: src/main/java
+    #指定目录不更新
+    exclude: test/**,templates/**
+#模板引擎
+thymeleaf:
+  model: HTML5
+  prefix: classpath:/templates/
+  suffix: .html
+  #指定编码
+  encoding: utf-8
+  #禁用缓存 默认false
+  cache: false
+
+#mybatis-plus配置控制台打印完整带参数SQL语句
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+
+    <title>Bootstrap Table</title>
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="dist/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="jquery/jquery-3.4.1.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/bootstrap-table.min.js"></script>
+    <script src="dist/locale/bootstrap-table-zh-CN.min.js"></script>
+</head>
+<body>
+<div style="margin-left:100px;margin-top:100px;width:1200px;">
+    <div id="toolbar" class="btn-group">
+        <button id="add" type="button" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        </button>
+        <button id="edit" type="button" class="btn btn-info">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+        </button>
+        <button id="delete" type="button" class="btn btn-danger">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+        </button>
+    </div>
+    <table id="table"></table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#table').bootstrapTable({
+            url: "ashx/LoadDataHandler.ashx",                      // URL
+            method: "post",                                        // 请求类型
+            contentType: "application/x-www-form-urlencoded",      // post请求必须要有，否则后台接受不到参数
+            toolbar: "#toolbar",                                   // 工具条
+            sidePagination: "server",                              // 设置在服务端还是客户端分页
+            showRefresh: true,                                     // 是否刷新按钮
+            sortStable: true,                                      // 是否支持排序
+            cache: false,                                          // 是否使用缓存
+            pagination: true,                                      // 是否显示分页
+            search: true,                                          // 是否有搜索框
+            clickToSelect: true,                                   // 是否点击选中行
+            pageNumber: 1,                                         // 首页页码，默认为1
+            pageSize: 10,                                          // 页面数据条数
+            pageList: [10, 20, 30],
+            queryParamsType: "",
+            queryParams: function (params) {
+                return {
+                    pageSize: params.pageSize,                     // 每页记录条数
+                    pageNumber: params.pageNumber,                 // 当前页索引
+                    sortName: params.sortName,                     // 排序字段名称
+                    sortOrder: params.sortOrder,                   // 降序还是升序
+                    searchText: params.searchText                  // 搜索关键字
+                };
+            },
+            formatLoadingMessage: function () {
+                return "请稍后，正在加载....";
+            },
+            formatNoMatches: function () {
+                return "暂无匹配数据.";
+            },
+            columns: [{
+                field: "select",
+                title: "全选",
+                align: "center",
+                halign: "center",
+                checkbox: true,
+            },
+                {
+                    field: 'Id',
+                    title: '编号',
+                    align: "center",
+                    halign: "center",
+                    sortable: true
+                },
+                {
+                    field: 'Name',
+                    title: '姓名',
+                    align: "center",
+                    halign: "center"
+                },
+                {
+                    field: 'Gender',
+                    title: '性别',
+                    align: "center",
+                    halign: "center"
+                },
+                {
+                    field: 'Age',
+                    title: '年龄',
+                    align: "center",
+                    halign: "center"
+                },
+                {
+                    field: 'PhoneNumber',
+                    title: '手机号',
+                    align: "center",
+                    halign: "center",
+
+                }]
+        })
+    });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购买教材</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link href="dist/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="jquery/jquery-3.4.1.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/bootstrap-table.min.js"></script>
+    <script src="dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="grid.css">
+</head>
+<body>
+<h1 style="margin-left: 400px">
+    教材购买
+</h1>
+
+<form>
+<h3 style="margin-top: 2px;margin-left: 100px">教材编号：<input type="text" name="pid" style="width: 150px;"></h3>
+<h3 style="margin-left: 465px;margin-top: -47px">购买数量：<input type="text" name="num" style="width: 150px;"></h3>
+<h3 style="margin-left:100px;margin-top: 2px">购买班级：<input type="text" name="cid"></h3>
+
+<h3 style="margin-top: -47px;margin-left: 600px"><button type="button" name="addNew" id="addNew">确认</button>
+    <input type="reset"></h3>
+
+<div style="align-items: center;text-align: center;bottom: auto">
+    <table id="table" class="table table-bordered tab-content" style="margin-top: 15px;margin-left: 12px;width: 97%">
+
+    </table>
+</div>
+</form>
+</body>
+
+<script>
+
+    var queryUrl = 'sm/AllProduct';
+
+
+    $("#addNew").on('click', e => {
+        var pid = document.getElementsByName("pid")[0].value;
+        var num = document.getElementsByName("num")[0].value;
+        var cid = document.getElementsByName("cid")[0].value;
+        var Addurl = '/sm/buy?Pid='+pid+'&Cid='+cid+'&Num='+num;
+        window.location.href=Addurl;
+        console.log(pid,num,cid);
+    });
+
+    $('#table').bootstrapTable({
+        method: 'get',
+        url: '/sm/AllProduct',
+        iconSize: 'outline',
+        striped: true, // 设置为true会有隔行变色效果
+        sortable: true,
+        pagination: true,
+        clickToSelect: true,    //是否启用点击选中行
+        formatNoMatches:function(){
+            return "<h1>未找到该条信息</h1>";
+        },
+
+        columns: [
+            {
+                field: 'select',
+                title: "全选",
+                align: "center",
+                halign: "center",
+                checkbox: true,
+            },
+            {
+                field: 'pid',
+                title: '产品编号',
+                align: "center",
+                halign: "center",
+                sortable: 'true'
+            },
+            {
+                field: 'pname',
+                title: '教材名称',
+                align: "center",
+                halign: "center"
+            },
+            {
+                field: 'ben',
+                title: '教材版本',
+                align: "center",
+                halign: "center"
+            },
+            {
+                field: 'price',
+                title: '教材价格（元）',
+                align: "center",
+                halign: "center"
+            },
+            ],
+
+    })
+
+
+</script>
+</html>

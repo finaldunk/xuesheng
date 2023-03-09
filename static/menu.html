@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta charset="UTF-8">
+    <title>功能列表</title>
+<link rel="stylesheet" href="dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2" style="height: 700px;background: #1c232f">
+            <div class="text-center" style="height: 50px;line-height: 50px">
+                <a href="#" style="text-decoration: none;color: #ffffff;display: block">学生管理系统后台</a>
+            </div>
+            <div class="row">
+                <div style="height: 1px;background: black;width: 100%;"></div>
+            </div>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                基本信息
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="student.html" target="main">学生学籍表</a></li>
+                            <li class="list-group-item"><a href="course.html" target="main">学生选课表</a></li>
+                            <li class="list-group-item"><a href="sc.html" target="main">学生成绩表</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                操作
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="studentAdd.html" target="main">添加学生</a></li>
+                            <li class="list-group-item"><a href="courseAdd.html" target="main">添加课程</a></li>
+                            <li class="list-group-item"><a href="caxun.html" target="main">组合查询课程</a></li>
+                            <li class="list-group-item"><a href="choose2.html" target="main">学生选课</a></li>
+                            <li class="list-group-item"><a href="gouwu.html" target="main">购买教材</a></li>
+                            <li class="list-group-item"><a href="gouwu2.html" target="main">购买情况</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                后台反馈
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <ul class="list-group">
+
+                            <li class="list-group-item"><a href="userForm.html" target="main">用户管理</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-10" style="height: 700px;background: #1b6d85">
+            <iframe name="main" src="welcome.jsp" height="80%" width="80%" align="center" frameborder="0" style="margin-top: 5%;margin-left:10%; border-radius: 10px;">
+            </iframe>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="jquery/jquery-3.4.1.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

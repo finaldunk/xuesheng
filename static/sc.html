@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生成绩表</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+
+    <link href="dist/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="jquery/jquery-3.4.1.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/bootstrap-table.min.js"></script>
+    <script src="dist/locale/bootstrap-table-zh-CN.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="grid.css">
+
+</head>
+<body>
+<h1 style="margin-left: 350px">
+    学生成绩录入
+</h1>
+<div class="container-fluid" style="background: #ffffff">
+    <div class="bs-example bs-example-form" role="form" >
+        <div id="search" class="input-group" style="width: 250px">
+            <input type="number" name="inp_id" id="inp_Id"  placeholder="根据学号进行精确查询" class="form-control" style="width: 200px" >
+            <span class="input-group-btn">
+								<button class="btn btn-default" id="findById" style="margin-top: -12px">查询</button>
+                    </span>
+        </div>
+        <div id="searchByName" class="input-group" style="width: 250px;margin-left: 300px;margin-top: -34px" >
+            <input type="text" name="inp_name" id="inp_Name"  placeholder="根据课程名进行模糊查询" class="form-control" style="width: 200px" >
+            <span class="input-group-btn">
+								<button class="btn btn-default" id="findByName" style="margin-top: -12px;">查询</button>
+                    </span>
+        </div>
+        <div style="margin-left:600px;width:250px;margin-top: -35px">
+            <button id="addNew" type="button" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>批量导入学生成绩
+            </button>
+<!--            <button id="delete" type="button" class="btn btn-danger" @click="deleteAll">-->
+<!--                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>批量删除-->
+<!--            </button>-->
+        </div>
+    </div>
+</div>
+
+<div style="align-items: center;text-align: center;bottom: auto">
+    <table id="table" class="table table-bordered tab-content" style="margin-top: 15px;margin-left: 12px;width: 97%">
+
+    </table>
+</div>
+
+<!-- 弹窗内容开始 -->
+<div id="background" class="back">
+    <div id="div1" class="content">
+        <div id="close">
+            <span id="close-button">×</span>
+            <h2>成绩录入</h2>
+        </div>
+        <div id="div2">
+            <h3 style="margin-left: 50px">平时成绩:<input type="text" name="fmark" style="margin-top: 20px;width: 200px">(占百分之30)</h3>
+            <h3 style="margin-left: 50px">考试成绩：<input type="text" name="kmark" style="margin-top: 20px;width: 200px">(占百分之70)</h3>
+<!--            最终成绩：<input type="text" value="${mark}">-->
+        </div>
+        <h3 style="margin-top: -100px;margin-left: 200px">
+        <button type="button" id="savemark">提交</button>
+        <button type="reset">重置</button>
+        </h3>
+    </div>
+</div>
+
+
+</body>
+</div>
+<script>
+    $(document).ready(function () {
+        var name = document.getElementById("inp_Id").value
+
+    });
+    let res = [];
+    let cid = [];
+    var queryUrl = '/sm/ScfindAll';
+
+    $("#findById").on('click',e =>{
+        console.log(document.getElementsByName("inp_id")[0].value)
+        //window.location.href='/sm/getById?id='+document.getElementsByName("inp_id")[0].value;
+        $('#table').bootstrapTable('refresh',{url:'/sm/ScgetById?id='+document.getElementsByName("inp_id")[0].value}); // 很重要的一步，刷新url！
+
+    })
+    $("#findByName").on('click',e =>{
+        console.log(document.getElementsByName("inp_name")[0].value)
+        //window.location.href='/sm/getById?id='+document.getElementsByName("inp_id")[0].value;
+        $('#table').bootstrapTable('refresh',{url:'/sm/ScgetByName?name='+document.getElementsByName("inp_name")[0].value}); // 很重要的一步，刷新url！
+
+    })
+
+
+    $("#addNew").on('click', e => {
+
+        console.log(id,cid,score);
+    });
+
+    $('#delete').on('click',e =>{
+        var flag = window.confirm("确定删除吗?");//返回是true-确定
+        if(flag){
+            if(res[0]!=null){
+                //发送到删除学生的action	//1,3,6
+                window.location.href='/sm/scdelete?res='+res+'&cid='+row.cid;
+            }else {
+                alert("请选择要删除的学生！")
+            }
+        }
+        console.log(res,cid);
+    })
+
+    function addfun(value, row, index) {//value：表示当前单元格中的值,row：表示当前行,index：表示当前行的下标{
+        return [
+            '<button id="id_row_download" type="button" class="btn btn-info" singleSelected=true>成绩录入</button>',
+            //'<button id="id_row_dalete" type="button" class="btn btn-warning" singleSelected=true>删除</button>',
+        ].join("");
+    }
+
+    window.operateEvents = {
+        "click #id_row_download": function (e, value, row, index) {
+            // var score = prompt("请输入该学生成绩",row.score);
+            // if(score){
+            //     window.location.href='/sm/scupdate?id='+row.id+'&cid='+row.cid+'&score='+score;
+            // }
+
+            var div = document.getElementById('background');
+            var close = document.getElementById('close-button');
+            var savemark = document.getElementById('savemark');
+
+
+            div.style.display = "block";
+            savemark.onclick = function close(){
+                var fmark = document.getElementsByName("fmark")[0].value;
+                var kmark = document.getElementsByName("kmark")[0].value;
+                var mark = fmark*0.3+kmark*0.7;
+                window.location.href='/sm/scupdate?id='+row.id+'&cid='+row.cid+'&fmark='+fmark+'&kmark='+kmark;
+            }
+
+
+            close.onclick = function close() {
+                div.style.display = "none";
+            }
+
+            window.onclick = function close(e) {
+                if (e.target == div) {
+                    div.style.display = "none";
+                }
+            }
+
+        },
+        "click #id_row_dalete": function (e, value, row, index) {
+            var flag = window.confirm("确定删除吗?");//返回是true-确定
+            if(flag){
+                //发送到删除学生的action	//1,3,6
+                window.location.href='/sm/scdelete?res='+row.id+'&cid='+row.cid;
+            }
+        }
+    }
+    $('#table').bootstrapTable({
+        method: 'get',
+        url: queryUrl,
+        iconSize: 'outline',
+        striped: true, // 设置为true会有隔行变色效果
+        sortable: true,
+        pagination: true,
+        clickToSelect: true,    //是否启用点击选中行
+        formatNoMatches:function(){
+            return "<h1>未找到该条信息</h1>";
+        },
+        //点击全选框时触发的操作
+        onCheckAll: function (rows) {
+            for (var i = 0; i < rows.length; i++) {
+                res.push(rows[i].id)
+                cid.push(rows[i].cid)
+            }
+            // //去重复
+            // function unique(arr) {
+            //     //set类似于数组，但他没有重复的值，所以可以用来快速去重！！！
+            //     return Array.from(new Set(arr));
+            // }
+            console.log(res,cid);
+        },
+        //点击每一个单选框时触发的操作
+        onCheck: function (row) {
+            //添加一个数字
+            res.push(row.id);
+            cid.push(row.cid);
+
+            console.log(res,cid);
+        },
+        //取消每一个单选框时对应的操作；
+        onUncheck: function (row) {
+            //删除对应数组
+            function removeArr(_arr, _obj) {
+                var length = _arr.length;
+                for (var i = 0; i < length; i++) {
+                    if (_arr[i] == _obj) {
+                        _arr.splice(i, 1); //删除下标为i的元素
+                        return _arr;
+                    }
+                }
+            }
+            console.log(removeArr(res, row.id),removeArr(cid,row.cid));
+        },
+        //取消全选时对应的操作；
+        onUncheckAll: function () {
+            //清空数组
+            res.splice(0);
+            cid.splice(0);
+            console.log(res,cid);
+        },
+
+        columns: [{
+            // field: 'select',
+            // title: "全选",
+            // align: "center",
+            // halign: "center",
+            // checkbox: true,
+            title : 'No',
+            valign:'middle',
+            align:'center',
+            formatter: function aFormatter(value, row, index){
+                return index+1;
+            }
+        },
+
+            {
+                field: 'id',
+                title: '学号',
+                align: "center",
+                halign: "center",
+            },
+            {
+                field: 'name',
+                title: '姓名',
+                align: "center",
+                halign: "center"
+            },
+            {
+                field: 'cid',
+                title: '课程号',
+                align: "center",
+                halign: "center"
+            },
+            {
+                field: 'cname',
+                title: '课程名',
+                align: "center",
+                halign: "center"
+            },
+            {
+                field: 'score',
+                title: '成绩',
+                align: "center",
+                halign: "center",
+                sortable: "asc",
+            },
+            {
+                title: "操作",
+                field: "field_operate",
+                width: '150px',
+                align: "center",
+                events: "operateEvents",
+                formatter: addfun
+            }],
+    })
+
+</script>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生信息添加页面</title>
+    <link rel="stylesheet" href="grid.css">
+
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+
+    <script src="jquery/jquery-3.4.1.min.js" type="text/javascript"></script>
+ </head>
+<body>
+
+<form action="/sm/addNew" method="get" class="form-horizontal" role="form">
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li><a href="#">添加学生信息</a></li>
+            <li><a href="#">2022</a></li>
+            <li class="active">六月</li>
+        </ol>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2" style="border-radius: 50%;background: rgba(154,201,222,0.52); height: 170px;margin-top: 20px">
+                <div class="container-fluid" style="margin-top: 70px;margin-left: -3px">
+                    <a class="btn btn-info" href="#" aria-placeholder="点击上传头像">点击上传头像</a>
+                </div>
+            </div>
+            <div class="col-md-9 col-md-offset-1" style="height: 40px;margin-top: 20px;font-size: 25px">学生学号：<input type="text" name="Id" required>
+                <div class="row">
+                    <div class="col-md-12" style="height: 40px;margin-top: 20px;font-size: 25px">学生姓名：<input type="text" name="Name"S></div>
+
+                    <div class="col-md-4" style="height: 40px;margin-top: 20px;font-size: 25px">性别：
+
+                        <label>
+                            <input type="radio" name="Sex" value="男">男
+                        </label>
+                        <label>
+                            <input type="radio" name="Sex" value="女">女
+                        </label>
+
+
+                    </div>
+                    <div class="col-md-7 col-md-offset-1" style="height: 40px;margin-top: 20px;font-size: 25px">学籍情况：
+                        <label>
+                            <input type="radio" name="Status" value="正常">正 常
+                        </label>
+                        <label>
+                            <input type="radio" name="Status" value="留级">留 级
+                        </label>
+                        <label>
+                            <input type="radio" name="Status" value="休学">休 学
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-6 col-md-offset-1" style="height: 40px;margin-top: 20px;font-size: 25px">
+                电子邮箱：<input type="email" name="Letter" value="">
+            </div>
+            <div class="col-md-3 col-md-offset-1" style="height: 40px;margin-top: 20px;font-size: 25px">
+                年级：<input type="number" name="Grade" value="" style="width: 50%"></div>
+            <div class="col-md-6 col-md-offset-1" style="height: 40px;margin-top: 20px;font-size: 25px">
+                联系电话：<input type="number" name="Phone" value="">
+            </div>
+            <div class="col-md-3 col-md-offset-1" style="height: 40px;margin-top: 20px;font-size: 25px">
+                年龄：<input type="number" name="Age" value="" style="width: 50%"></div>
+            <div class="col-md-8 col-md-offset-1" style="height: 40px;margin-top: 20px;font-size: 25px">
+                住址：<input type="text" name="Place" value="" style="width: 80%">
+            </div>
+        </div>
+        <div class="form-group" style="margin-top: 30px;size: 40px">
+            <div class="col-md-offset-5 col-md-3">
+                <button type="submit" class="btn btn-success">保存</button>
+                <button type="reset" class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</form>
+</body>
+
+<script>
+    $(document).ready(function () {
+        console.log(document.getElementsByName("Place")[0].values())
+    });
+</script>
+
+</html>

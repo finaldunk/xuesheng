@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link href="dist/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="jquery/jquery-3.4.1.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/bootstrap-table.min.js"></script>
+    <script src="dist/locale/bootstrap-table-zh-CN.min.js"></script>
+</head>
+<body>
+<h1 align="center">选课界面</h1>
+<table class="table table-bordered">
+    <tbody>
+
+    <tr>
+        <td>
+            <table class="table" id="table-methods-table-left" style="width:500px">
+                <thead>
+                <h4>可选课程</h4>
+                <div id="search" class="input-group" style="width: 250px;margin-left: 100px;margin-top: -35px;margin-bottom: 5px" >
+                    <input type="number" name="inp_id" id="inp_Id"  placeholder="根据课程号进行精确查询" class="form-control" style="width: 200px" >
+                    <span class="input-group-btn">
+								<button class="btn btn-default" id="findById" >查询</button>
+                    </span>
+                </div>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-field="cid">
+                        课程号
+                    </th>
+                    <th data-field="cname">
+                        课程名
+                    </th>
+                    <th data-field="introduce">
+                        简介
+                    </th>
+                    <th data-field="cteacher">
+                        任课教师
+                    </th>
+<!--                    <th data-field="ReadyDate">-->
+<!--                        Ready Date-->
+<!--                    </th>-->
+<!--                    <th data-field="Pallets">-->
+<!--                        Pallets-->
+<!--                    </th>-->
+                </tr>
+                </thead>
+
+            </table>
+        </td>
+        <td valign="middle">
+
+            <button class="btn btn-primary btn-large btn-block" type="button" id="btn2Right" data-method="append" style="margin-top: 120%">==></button>
+            <button  id="btn2Left" class="btn btn-info btn-large btn-block" type="button"><==</button>
+
+        </td>
+        <td>
+            <table class="table" id="table-methods-table-right" style="width: 350px;">
+                <thead>
+                <h4>已选课程</h4>
+                <div id="searchByName" class="input-group" style="width: 200px;margin-left: 90px;margin-top: -35px;margin-bottom: 5px" >
+                    <input type="text" name="inp_name" id="inp_Name"  placeholder="输入学号查询选课情况" class="form-control" style="width: 200px" >
+                    <span class="input-group-btn">
+								<button class="btn btn-default" id="findByName" >查询</button>
+                    </span>
+                </div>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-field="cid">
+                        课程号
+                    </th>
+                    <th data-field="cname">
+                        课程名
+                    </th>
+
+<!--                    </th>-->
+<!--                    <th data-field="ReadyDate">-->
+<!--                        Ready Date-->
+<!--                    </th>-->
+<!--                    <th data-field="Pallets">-->
+<!--                        Pallets-->
+<!--                    </th>-->
+                </tr>
+                </thead>
+
+            </table>
+        </td>
+    </tr>
+    <tr>
+
+        <td colspan="5" style="height: 100px">
+            <button class="btn btn-primary btn-large btn-block" type="button" id="btnOk" style="width: 40%;height: 60%;margin-left: 55%;margin-top: 1%">选课</button>
+            <button class="btn btn-primary btn-large btn-block" type="button" id="btnDe" style="width: 40%;height: 60%;margin-top: -5%;margin-left: 5%">退订</button>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    $("#btnDe").on('click',e=>{
+        var res= null;
+        var res2 = [];
+        var id = 0;
+        id = document.getElementsByName("inp_name")[0].value;
+        var data = $tableLeft.bootstrapTable("getData");
+        cids = $.map(data,function (row){
+            return row.cid;
+        });
+        res = cids;
+        console.log(id,res);
+        window.location.href='/sm/deselect?id='+id+'&res='+res;
+    });
+
+    $("#btnOk").on('click',e=>{
+        var res = null;
+        var res2 = [];
+        var id = 0;
+        id = document.getElementsByName("inp_name")[0].value;
+        var data = $tableRight.bootstrapTable("getData");
+        cids = $.map(data,function (row){
+           return row.cid;
+        });
+        res = cids;
+        if(id == 0){
+            window.alert("请输入学号！！")
+        }else if(res.length === 0){
+            window.alert("请选择课程！！")
+        }else {
+            window.location.href='/sm/choose?id='+id+'&res='+res;
+        }
+        console.log(id,res);
+    });
+
+    $("#findByName").on('click',e=>{
+        //window.location.href='/sm/getById?id='+document.getElementsByName("inp_id")[0].value;
+        $tableRight.bootstrapTable('refresh',{url:'/sm/chooseFindById?id='+document.getElementsByName("inp_name")[0].value}); // 很重要的一步，刷新url！
+        var selects = $tableRight.bootstrapTable("getData");
+        SKUNo = $.map(selects,function (row) {
+            console.log(row.cid);
+            return row.cid;
+        });
+        $tableLeft.bootstrapTable('remove', {
+            field: 'cid',
+            values: SKUNo,
+        });
+
+    });
+
+    $("#findById").on('click',e =>{
+        console.log(document.getElementsByName("inp_id")[0].value)
+        //window.location.href='/sm/getById?id='+document.getElementsByName("inp_id")[0].value;
+        $tableLeft.bootstrapTable('refresh',{url:'/sm/CourseGetById?id='+document.getElementsByName("inp_id")[0].value}); // 很重要的一步，刷新url！
+
+    });
+    $tableLeft = $('#table-methods-table-left').bootstrapTable({
+        url: '/sm/CourseAll',
+        method:'get',
+        clickToSelect:true
+    });
+
+    $tableRight = $('#table-methods-table-right').bootstrapTable({
+        // url:'/sm/CourseAll',
+        // method: 'get',
+        clickToSelect: true
+    });
+
+    $('#btn2Right').click(function () {
+        var selectContent = $tableLeft.bootstrapTable('getSelections');
+        $tableRight.bootstrapTable("append", selectContent);
+        var selects = $tableLeft.bootstrapTable('getSelections');
+        SKUNo = $.map(selects, function (row) {
+            return row.cid;
+        });
+        $tableLeft.bootstrapTable('remove', {
+            field: 'cid',
+            values: SKUNo
+        });
+    });
+    $('#btn2Left').click(function () {
+        var selectContent = $tableRight.bootstrapTable('getSelections');
+        $tableLeft.bootstrapTable("append", selectContent);
+        var selects = $tableRight.bootstrapTable('getSelections');
+        SKUNo = $.map(selects, function (row) {
+            return row.cid;
+        });
+        $tableRight.bootstrapTable('remove', {
+            field: 'cid',
+            values: SKUNo
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+.container{
+    position: relative;
+    /* Take full size */
+    height: 100%;
+    width: 120%;
+    margin: 0;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Background */
+    background: url('img.png') center center / cover no-repeat;
+}
+.login{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: 100px #87ceeb;
+    border-radius: 10px;
+    width: 20%;
+    height: 60%;
+    position:relative;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(3px);
+}

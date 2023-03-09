@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新用户注册</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+<div class="container-fluid" style="background: url('img.png') center center/cover no-repeat;height:700px;width: 1500px">
+    <div class="login" style="margin-top: 8%;margin-left: 40%">
+
+        <div class="container-fluid">
+            <form class="form-signin" action="/sm/register" method="get">
+                <h2 class="form-signin-heading">请登录</h2>
+                <label for="username" class="sr-only">用户名</label>
+                <input type="number" id="username" name="username" class="form-control" placeholder="用户名" required autofocus>
+                <label for="password" class="sr-only">密&&码</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="密 码" required>
+                <div class="checkbox">
+                    <label>
+                    身份：<input type="radio" name="status" value="student">学生
+                        <input type="radio" name="status" value="teacher">教师
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+                <button class="btn btn-lg btn-primary btn-block" type="reset">重置</button>
+            </form>
+
+        </div> <!-- /container -->
+    </div>
+
+</div>
+
+
+</body>
+</html>

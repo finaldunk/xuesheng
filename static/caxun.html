@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sql查询</title>
+
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <link href="dist/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="jquery/jquery-3.4.1.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <script src="dist/bootstrap-table.min.js"></script>
+    <script src="dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="grid.css">
+
+</head>
+<body>
+<h1 style="margin-left: 360px;;align-items: center">
+    组合查询课程
+</h1>
+<form>
+    <input type="text" name="inp_text1" id="inp_text1" style="margin-left: 220px;margin-top: 8px">
+    <select class="form-control"  id="con1" style="width: 115px;margin-left: 100px;margin-top: -33px;font-size: 16px">
+        <option value="Cid">课程号</option>
+        <option value="Cname">课程名</option>
+        <option value="Cteacher">任课教师</option>
+        <option value="People">课程人数</option>
+        <option value="Credit">学分</option>
+    </select>
+
+    <input type="text" name="inp_text2" id="inp_text2" style="margin-left: 220px;margin-top: 16px;">
+    <select class="form-control"  id="con2" style="width:115px;margin-left: 100px;margin-top: -33px;font-size: 16px">
+        <option value="Cid">课程号</option>
+        <option value="Cname">课程名</option>
+        <option value="Cteacher">任课教师</option>
+        <option value="People">课程人数</option>
+        <option value="Credit">学分</option>
+    </select>
+
+
+    <select class="form-control" name="andor" id="test" style="width: 100px;margin-left: 500px;margin-top: -81px;font-size: 19px">
+        <option value="and">and</option>
+        <option value="or">or</option>
+        <option value="not">not</option>
+    </select>
+    <h3 style="margin-left: 580px;margin-top: -2px;"><input type="reset"></h3>
+</form>
+<h3 style="margin-left: 500px;margin-top: -47px;"><button name="findById" id="findById">提交</button></h3>
+
+
+<div style="align-items: center;text-align: center;bottom: auto">
+    <table id="table" class="table table-bordered tab-content" style="margin-top: 15px;margin-left: 12px;width: 97%">
+
+    </table>
+</div>
+
+</body>
+
+<script>
+    var res = [];
+    var queryUrl = '/sm/CourseAll';
+
+
+    $("#findById").on('click',e =>{
+
+        var option1=$("#con1 option:selected");  //获取选中的项
+        var con1 = option1.val();
+
+        var option2=$("#con2 option:selected");  //获取选中的项
+        var con2 = option2.val();
+
+        var options=$("#test option:selected");  //获取选中的项
+        var andor = options.val();
+
+        var text1 = document.getElementsByName("inp_text1")[0].value;
+        var text2 = document.getElementsByName("inp_text2")[0].value;
+
+        console.log(andor+con1+con2+" "+text1+" "+text2)
+
+
+        //console.log(document.getElementsByName("inp_id")[0].value)
+        //window.location.href='/sm/getById?id='+document.getElementsByName("inp_id")[0].value;
+        $('#table').bootstrapTable('refresh',{url:'/sm/caxun?con1='+con1+'&con2='+con2+'&text1='+text1+'&text2='+text2+'&andor='+andor}); // 很重要的一步，刷新url！
+
+    })
+    $("#findByName").on('click',e =>{
+        console.log(document.getElementsByName("inp_name")[0].value)
+        //window.location.href='/sm/getById?id='+document.getElementsByName("inp_id")[0].value;
+        $('#table').bootstrapTable('refresh',{url:'/sm/CourseGetByName?name='+document.getElementsByName("inp_name")[0].value}); // 很重要的一步，刷新url！
+
+    })
+    $("#addNew").on('click', e => {
+        setTimeout("javascript:location.href='courseAdd.html'");
+        console.log("你是猪吗");
+    });
+
+    $('#delete').on('click',e =>{
+        var flag = window.confirm("确定删除吗?");//返回是true-确定
+        if(flag){
+            if(res[0]!=null){
+                //发送到删除学生的action	//1,3,6
+                window.location.href='/sm/CourseDelete?res='+res
+            }else {
+                alert("请选择要删除的课程！")
+            }
+        }
+        console.log(res);
+    })
+    function addfun(value, row, index) {//value：表示当前单元格中的值,row：表示当前行,index：表示当前行的下标{
+        return [
+            '<button id="id_row_download" type="button" class="btn btn-info" singleSelected=true>修改</button>',
+            '<button id="id_row_dalete" type="button" class="btn btn-warning" singleSelected=true>删除</button>',
+        ].join("");
+    }
+
+    window.operateEvents = {
+        "click #id_row_download": function (e, value, row, index) {
+            console.log(row)
+            var Student = {
+                "Id": row.id,
+                "Name": row.name,
+                "Phone": row.phone
+            };
+
+            $.ajax({
+                cache : false,
+                type : 'post',
+                url : '/sm/save',
+                // 预期后端返回的数据类型
+                dataType: "json",
+                data:Student,
+
+                error : function() {
+                    alert('smx失败 ');
+                },
+                success : function (data) {
+                    // 返回的是object
+                    alert(jQuery.type(data));
+                    console.log("flag: " + row.id);
+                    console.log("name: " + row.name);
+                }
+            });
+        },
+        "click #id_row_dalete": function (e, value, row, index) {
+            var flag = window.confirm("确定删除吗?");//返回是true-确定
+            if(flag){
+                //发送到删除学生的action	//1,3,6
+                window.location.href='/sm/CourseDelete?res='+row.cid;
+            }
+        }
+    }
+    $('#table').bootstrapTable({
+        method:'get',
+        url:queryUrl,
+        iconSize: 'outline',
+        striped: true, // 设置为true会有隔行变色效果
+        sortable: true,
+        pagination:true,
+        clickToSelect:true,//点击行选中
+        idField:"cid",
+        formatNoMatches:function (){
+            return"<h1>未找到该条信息</h1>"
+        },
+        //点击全选框时触发的操作
+        onCheckAll:function(rows){
+            for(var i =0;i<rows.length;i++){
+                res.push(rows[i].cid)
+            }
+            //去重复
+            function unique(arr) {
+                //set类似于数组，但他没有重复的值，所以可以用来快速去重！！！
+                return Array.from(new Set(arr));
+            }
+            console.log(unique(res))
+        },
+        //点击每一个单选框时触发的操作
+        onCheck:function(row){
+            //添加一个数字
+            res.push(row.cid);
+            console.log(res);
+        },
+        //取消每一个单选框时对应的操作；
+        onUncheck:function(row){
+            //删除对应数组
+            function removeArr(_arr, _obj){
+                var length = _arr.length;
+                for (var i = 0; i < length; i++) {
+                    if (_arr[i] == _obj) {
+                        _arr.splice(i, 1); //删除下标为i的元素
+                        return _arr;
+                    }
+                }
+            }
+
+            console.log(removeArr(res,row.cid));
+        },
+        //取消全选时对应的操作；
+        onUncheckAll:function(){
+            //清空数组
+            res.splice(0);
+            console.log(res);
+        },
+        columns: [{
+            field: 'select',
+            title: "全选",
+            align: "center",
+            halign: "center",
+            checkbox: true,
+        },
+
+            {
+                field: 'cid',
+                title: '课程号',
+                align: "center",
+                halign: "center",
+                sortable:'true'
+            },
+            {
+                field: 'cname',
+                title: '课程名',
+                align: "center",
+                halign: "center"
+            },
+            {
+                field: 'cteacher',
+                title: '任课教师',
+                align: "center",
+                halign: "center"
+            },
+            {
+                field: 'introduce',
+                title: '课程简介',
+                align: "center",
+                halign: "center"
+            },
+            {
+                field: 'credit',
+                title: '学分',
+                align: "center",
+                halign: "center",
+                sortable: 'true'
+            },
+            {
+                field: 'people',
+                title: '课程人数',
+                align: "center",
+                halign: "center"
+            },
+            {
+                title: "操作",
+                field: "field_operate",
+                width: '150px',
+                align: "center",
+                events: "operateEvents",
+                formatter: addfun
+
+            }]
+    })
+
+</script>
+</html>
